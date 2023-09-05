@@ -42,3 +42,48 @@ main {
     width: 3rem;
     margin: 0 0.5rem;
 }
+
+.bg-limegreen {
+    background-color: limegreen;
+}
+.bg-lightgray {
+    background-color: lightgray;
+}
+.bg-yellow {
+    background-color: yellow;
+}
+
+.win {
+    background: linear-gradient(
+        270deg,
+        #fb0404,
+        #2732c6,
+        #15ffc3,
+        #e8f902,
+        #ff2f80,
+        #52c627
+    );
+    background-size: 1000% 1000%;
+    color: white;
+
+    animation: win 3s linear infinite;
+}
+
+@keyframes win {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+footer {
+    text-align: center;
+    color: red;
+    font-size: 3rem;
+    margin-top: 3rem;
+}
