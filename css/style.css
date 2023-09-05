@@ -81,9 +81,11 @@ main {
     }
 }
 
-footer {
+.loss,
+.invalid-word {
     text-align: center;
-    color: red;
+    color: black;
     font-size: 3rem;
+    font-weight: bold;
     margin-top: 3rem;
 }

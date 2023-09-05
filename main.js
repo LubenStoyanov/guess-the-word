@@ -6,7 +6,8 @@ let letters = [];
 let word = "";
 const GET_WORD_URL = "https://words.dev-apis.com/word-of-the-day";
 const VALIDATE_WORD_URL = "https://words.dev-apis.com/validate-word";
-const loss = document.querySelector("footer");
+const loss = document.querySelector(".loss");
+const invalidWord = document.querySelector(".invalid-word");
 
 const wordOfToday = async () => {
     try {
@@ -22,21 +23,26 @@ const isLetter = (letter) => {
     return /^[a-zA-Z]$/.test(letter);
 };
 
-const isValidWord = async (word) => {
-    const response = await fetch(VALIDATE_WORD_URL, {
-        method: "POST",
-        "content-type": "application/json",
-        body: JSON.stringify({ word: guessWord }),
-    });
-    const data = await response.json();
-
-    return data.validWord;
+const isValidWord = async () => {
+    console.log("invalid??");
+    try {
+        const response = await fetch(VALIDATE_WORD_URL, {
+            method: "POST",
+            body: JSON.stringify({ word: guessWord }),
+        });
+        const data = await response.json();
+        return data.validWord;
+    } catch (error) {
+        console.error(error);
+    }
 };
 
-const handleGuess = () => {
-    logVariables();
-    if (!isValidWord) {
-        // TODO implement validation
+const handleGuess = async () => {
+    // logVariables();
+    const isValid = await isValidWord();
+    if (!isValid) {
+        invalidWord.hidden = false;
+        return;
     }
     if (guessWord === word) {
         letters.forEach((l) => {
@@ -72,7 +78,7 @@ const handleKeyDown = (event) => {
     switch (event.key) {
         case "Backspace":
             console.log("Backspace");
-            // TODO implement delete feature
+            // TODO: implement delete feature
             break;
         case "Enter":
             if (guessWord.length !== 5) {
