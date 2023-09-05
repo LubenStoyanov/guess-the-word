@@ -8,8 +8,10 @@ const GET_WORD_URL = "https://words.dev-apis.com/word-of-the-day";
 const VALIDATE_WORD_URL = "https://words.dev-apis.com/validate-word";
 const loss = document.querySelector(".loss");
 const invalidWord = document.querySelector(".invalid-word");
+const loading = document.querySelector(".lds-roller");
 
 const wordOfToday = async () => {
+    loading.classList.remove("hidden");
     try {
         const promise = await fetch(GET_WORD_URL);
         const data = await promise.json();
@@ -17,6 +19,7 @@ const wordOfToday = async () => {
     } catch (error) {
         console.error(error);
     }
+    loading.classList.add("hidden");
 };
 
 const isLetter = (letter) => {
@@ -37,7 +40,15 @@ const isValidWord = async () => {
 };
 
 const handleGuess = async () => {
-    const isValid = await isValidWord();
+    loading.classList.remove("hidden");
+    let isValid;
+    try {
+        isValid = await isValidWord();
+    } catch (error) {
+        console.error(error);
+    }
+    loading.classList.add("hidden");
+
     if (!isValid) {
         invalidWord.hidden = false;
         return;
