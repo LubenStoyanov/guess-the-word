@@ -24,7 +24,6 @@ const isLetter = (letter) => {
 };
 
 const isValidWord = async () => {
-    console.log("invalid??");
     try {
         const response = await fetch(VALIDATE_WORD_URL, {
             method: "POST",
@@ -38,7 +37,6 @@ const isValidWord = async () => {
 };
 
 const handleGuess = async () => {
-    // logVariables();
     const isValid = await isValidWord();
     if (!isValid) {
         invalidWord.hidden = false;
@@ -54,7 +52,6 @@ const handleGuess = async () => {
                 letters[i].classList.add("bg-lightgray");
             }
             if (l === word[i]) {
-                console.log(letters[i]);
                 letters[i].classList.add("bg-limegreen");
             } else if (word.includes(l)) {
                 letters[i].classList.add("bg-yellow");
@@ -62,7 +59,6 @@ const handleGuess = async () => {
         });
         currentGuess++;
         if (currentGuess > 5) {
-            console.log("You lost.");
             loss.hidden = false;
             return;
         }
@@ -77,8 +73,9 @@ const handleGuess = async () => {
 const handleKeyDown = (event) => {
     switch (event.key) {
         case "Backspace":
-            console.log("Backspace");
-            // TODO: implement delete feature
+            guessWord = guessWord.slice(0, guessWord.length - 1);
+            currentLetter--;
+            letters[currentLetter].innerText = "";
             break;
         case "Enter":
             if (guessWord.length !== 5) {
@@ -98,6 +95,7 @@ const handleKeyUp = (event) => {
     }
 
     guessWord += event.key;
+    letters[currentLetter].innerText = event.key;
     currentLetter++;
 
     if (letters[currentLetter] === undefined) {
@@ -116,9 +114,8 @@ const getGuessDiv = () => {
     const lettersNodeList = guessDiv.childNodes;
     const lettersArray = Array.from(lettersNodeList);
     letters = lettersArray.filter((letter) => letter.nodeName !== "#text");
-    letters[currentLetter].focus();
-    guessDiv.addEventListener("keydown", handleKeyDown);
-    guessDiv.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
 
     return guessDiv;
 };
@@ -129,11 +126,3 @@ const init = () => {
 };
 
 init();
-
-const logVariables = () => {
-    console.log("guessWord", guessWord);
-    console.log("currentGuess", currentGuess);
-    console.log("guessdiv", guessDiv);
-    console.log("currentLetter", currentLetter);
-    console.log("letters", letters);
-};
