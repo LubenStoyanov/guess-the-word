@@ -31,16 +31,20 @@ main {
 }
 
 .word-container {
+    display: flex;
     margin: 0.5rem 0;
 }
 
 .letter {
     font-size: 3rem;
-    text-align: center;
     text-transform: uppercase;
     height: 3rem;
     width: 3rem;
     margin: 0 0.5rem;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .bg-limegreen {
