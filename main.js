@@ -1,139 +1,138 @@
-let currentGuess = 0;
+"use strict";
+const loss = document.querySelector(".loss");
+const invalidWord = document.querySelector(".invalid-word");
+const loading = document.querySelector(".lds-roller");
+let currentRound = 0;
 let currentLetter = 0;
 let guessWord = "";
 let guessDiv;
 let letters = [];
 let word = "";
+const ANSWER_LENGTH = 5;
+const MAX_GUESSES = 5;
 const GET_WORD_URL = "https://words.dev-apis.com/word-of-the-day";
 const VALIDATE_WORD_URL = "https://words.dev-apis.com/validate-word";
-const loss = document.querySelector(".loss");
-const invalidWord = document.querySelector(".invalid-word");
-const loading = document.querySelector(".lds-roller");
 
-const wordOfToday = async () => {
-    loading.classList.remove("hidden");
-    try {
-        const promise = await fetch(GET_WORD_URL);
-        const data = await promise.json();
-        word = data.word;
-    } catch (error) {
-        console.error(error);
-    }
-    loading.classList.add("hidden");
-};
+async function main() {
+    const wordOfToday = async () => {
+        loading.classList.remove("hidden");
+        try {
+            const promise = await fetch(GET_WORD_URL);
+            const data = await promise.json();
+            word = data.word;
+        } catch (error) {
+            console.error(error);
+        }
+        loading.classList.add("hidden");
+    };
 
-const isLetter = (letter) => {
-    return /^[a-zA-Z]$/.test(letter);
-};
+    const isValidWord = async () => {
+        try {
+            const response = await fetch(VALIDATE_WORD_URL, {
+                method: "POST",
+                body: JSON.stringify({ word: guessWord }),
+            });
+            const data = await response.json();
+            return data.validWord;
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-const isValidWord = async () => {
-    try {
-        const response = await fetch(VALIDATE_WORD_URL, {
-            method: "POST",
-            body: JSON.stringify({ word: guessWord }),
-        });
-        const data = await response.json();
-        return data.validWord;
-    } catch (error) {
-        console.error(error);
-    }
-};
+    const isLetter = (letter) => {
+        return /^[a-zA-Z]$/.test(letter);
+    };
 
-const handleGuess = async () => {
-    loading.classList.remove("hidden");
-    let isValid;
-    try {
-        isValid = await isValidWord();
-    } catch (error) {
-        console.error(error);
-    }
-    loading.classList.add("hidden");
+    const handleGuess = async () => {
+        loading.classList.remove("hidden");
+        let isValid;
+        try {
+            isValid = await isValidWord();
+        } catch (error) {
+            console.error(error);
+        }
+        loading.classList.add("hidden");
 
-    if (!isValid) {
-        invalidWord.hidden = false;
-        return;
-    }
-    if (guessWord === word) {
-        letters.forEach((l) => {
-            l.classList.add("win");
-        });
-    } else {
-        guessWord.split("").forEach((l, i) => {
-            if (!word.includes(l)) {
-                letters[i].classList.add("bg-lightgray");
-            }
-            if (l === word[i]) {
-                letters[i].classList.add("bg-limegreen");
-            } else if (word.includes(l)) {
-                letters[i].classList.add("bg-yellow");
-            }
-        });
-        currentGuess++;
-        if (currentGuess > 5) {
-            loss.hidden = false;
+        if (!isValid) {
+            invalidWord.hidden = false;
             return;
         }
-        if (guessWord.length >= 5) {
-            currentLetter = 0;
-            guessWord = "";
-        }
-        getGuessDiv();
-    }
-};
-
-const handleKeyDown = (event) => {
-    switch (event.key) {
-        case "Backspace":
-            guessWord = guessWord.slice(0, guessWord.length - 1);
-            currentLetter--;
-            letters[currentLetter].innerText = "";
-            break;
-        case "Enter":
-            if (guessWord.length !== 5) {
-                break;
+        if (guessWord === word) {
+            letters.forEach((l) => {
+                l.classList.add("win");
+            });
+        } else {
+            guessWord.split("").forEach((l, i) => {
+                if (!word.includes(l)) {
+                    letters[i].classList.add("bg-lightgray");
+                }
+                if (l === word[i]) {
+                    letters[i].classList.add("bg-limegreen");
+                } else if (word.includes(l)) {
+                    letters[i].classList.add("bg-yellow");
+                }
+            });
+            currentRound++;
+            if (currentRound > MAX_GUESSES) {
+                loss.hidden = false;
+                return;
             }
-            handleGuess();
-            break;
-    }
-};
+            if (guessWord.length >= ANSWER_LENGTH) {
+                currentLetter = 0;
+                guessWord = "";
+            }
+            getGuessDiv();
+        }
+    };
 
-const handleKeyUp = (event) => {
-    if (!isLetter(event.key)) {
-        return;
-    }
-    if (guessWord.length >= 5) {
-        return;
-    }
+    const handleKeyDown = (event) => {
+        switch (event.key) {
+            case "Backspace":
+                invalidWord.hidden = true;
+                if (guessWord.length === 0) {
+                    return;
+                }
+                guessWord = guessWord.slice(0, guessWord.length - 1);
+                currentLetter--;
+                letters[currentLetter].innerText = "";
+                break;
+            case "Enter":
+                if (guessWord.length !== ANSWER_LENGTH) {
+                    break;
+                }
+                handleGuess();
+                break;
+        }
+    };
 
-    guessWord += event.key;
-    letters[currentLetter].innerText = event.key;
-    currentLetter++;
+    const handleKeyUp = (event) => {
+        if (!isLetter(event.key) || guessWord.length >= ANSWER_LENGTH) {
+            return;
+        }
 
-    if (letters[currentLetter] === undefined) {
-        return;
-    }
-    letters[currentLetter].focus();
-};
+        guessWord += event.key;
+        letters[currentLetter].innerText = event.key;
+        currentLetter++;
 
-const getGuessDiv = () => {
-    if (currentGuess > 0) {
-        guessDiv.removeEventListener("keydown", handleKeyDown);
-        guessDiv.removeEventListener("keyup", handleKeyUp);
-    }
+        if (letters[currentLetter] === undefined) {
+            return;
+        }
+        letters[currentLetter].focus();
+    };
 
-    guessDiv = document.querySelector(`.guess-${currentGuess}`);
-    const lettersNodeList = guessDiv.childNodes;
-    const lettersArray = Array.from(lettersNodeList);
-    letters = lettersArray.filter((letter) => letter.nodeName !== "#text");
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+    const getGuessDiv = () => {
+        const guessRow = document.querySelector(`.round-${currentRound}`);
+        const lettersNodeList = guessRow.childNodes;
+        const lettersArray = Array.from(lettersNodeList);
+        letters = lettersArray.filter((letter) => letter.nodeName !== "#text");
+        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keyup", handleKeyUp);
 
-    return guessDiv;
-};
+        guessDiv = guessRow;
+    };
 
-const init = () => {
-    guessDiv = getGuessDiv();
+    getGuessDiv();
     wordOfToday();
-};
+}
 
-init();
+main();
