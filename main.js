@@ -81,7 +81,7 @@ async function main() {
                 currentLetter = 0;
                 guessWord = "";
             }
-            getGuessDiv();
+            currentRow();
         }
     };
 
@@ -120,7 +120,7 @@ async function main() {
         letters[currentLetter].focus();
     };
 
-    const getGuessDiv = () => {
+    const currentRow = () => {
         const guessRow = document.querySelector(`.round-${currentRound}`);
         const lettersNodeList = guessRow.childNodes;
         const lettersArray = Array.from(lettersNodeList);
@@ -131,7 +131,7 @@ async function main() {
         guessDiv = guessRow;
     };
 
-    getGuessDiv();
+    currentRow();
     wordOfToday();
 }
 
