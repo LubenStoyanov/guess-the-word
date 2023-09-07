@@ -2,28 +2,31 @@
 const loss = document.querySelector(".loss");
 const invalidWord = document.querySelector(".invalid-word");
 const loading = document.querySelector(".lds-roller");
-let currentRound = 0;
-let currentLetter = 0;
-let guessWord = "";
-let guessDiv;
-let letters = [];
-let word = "";
+
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
 const GET_WORD_URL = "https://words.dev-apis.com/word-of-the-day";
 const VALIDATE_WORD_URL = "https://words.dev-apis.com/validate-word";
 
 async function main() {
+    let currentRound = 0;
+    let currentLetter = 0;
+    let guessWord = "";
+    let guessDiv;
+    let letters = [];
+    let word = "";
+    let charAmount = {};
+
     const wordOfToday = async () => {
-        loading.classList.remove("hidden");
         try {
+            loading.classList.remove("hidden");
             const promise = await fetch(GET_WORD_URL);
             const data = await promise.json();
             word = data.word;
+            loading.classList.add("hidden");
         } catch (error) {
             console.error(error);
         }
-        loading.classList.add("hidden");
     };
 
     const isValidWord = async () => {
@@ -43,35 +46,55 @@ async function main() {
         return /^[a-zA-Z]$/.test(letter);
     };
 
-    const handleGuess = async () => {
-        loading.classList.remove("hidden");
-        let isValid;
+    const getCharAmount = () => {
+        guessWord.split("").forEach((c) => {
+            if (charAmount[c]) {
+                charAmount[c]++;
+            } else {
+                charAmount[c] = 0;
+            }
+        });
+    };
+
+    const guess = async () => {
+        if (guessWord.length !== ANSWER_LENGTH) {
+            return;
+        }
+
         try {
-            isValid = await isValidWord();
+            loading.classList.remove("hidden");
+            const isValid = await isValidWord();
+            invalidWord.hidden = isValid;
+            loading.classList.add("hidden");
+            if (!isValid) {
+                return;
+            }
         } catch (error) {
             console.error(error);
         }
-        loading.classList.add("hidden");
 
-        if (!isValid) {
-            invalidWord.hidden = false;
-            return;
-        }
         if (guessWord === word) {
             letters.forEach((l) => {
-                l.classList.add("win");
+                guessDiv.classList.add("win");
             });
         } else {
-            guessWord.split("").forEach((l, i) => {
+            const guessWordArray = guessWord.split("");
+            guessWordArray.forEach((l, i) => {
+                if (l === word[i]) {
+                    letters[i].classList.add("bg-limegreen");
+                }
                 if (!word.includes(l)) {
                     letters[i].classList.add("bg-lightgray");
                 }
-                if (l === word[i]) {
-                    letters[i].classList.add("bg-limegreen");
-                } else if (word.includes(l)) {
+            });
+
+            getCharAmount();
+            guessWordArray.forEach((l, i) => {
+                if (charAmount[l] !== 0 && word.includes(l)) {
                     letters[i].classList.add("bg-yellow");
                 }
             });
+
             currentRound++;
             if (currentRound > MAX_GUESSES) {
                 loss.hidden = false;
@@ -85,39 +108,29 @@ async function main() {
         }
     };
 
-    const handleKeyDown = (event) => {
-        switch (event.key) {
-            case "Backspace":
-                invalidWord.hidden = true;
-                if (guessWord.length === 0) {
-                    return;
-                }
-                guessWord = guessWord.slice(0, guessWord.length - 1);
-                currentLetter--;
-                letters[currentLetter].innerText = "";
-                break;
-            case "Enter":
-                if (guessWord.length !== ANSWER_LENGTH) {
-                    break;
-                }
-                handleGuess();
-                break;
+    const eraseLastChar = () => {
+        invalidWord.hidden = true;
+        if (guessWord.length === 0) {
+            return;
         }
+        guessWord = guessWord.slice(0, guessWord.length - 1);
+        currentLetter--;
+        letters[currentLetter].innerText = "";
     };
 
-    const handleKeyUp = (event) => {
-        if (!isLetter(event.key) || guessWord.length >= ANSWER_LENGTH) {
+    const handleLetter = (letter) => {
+        console.log(letter);
+        if (guessWord.length >= ANSWER_LENGTH) {
             return;
         }
 
-        guessWord += event.key;
-        letters[currentLetter].innerText = event.key;
+        guessWord += letter;
+        letters[currentLetter].innerText = letter;
         currentLetter++;
 
         if (letters[currentLetter] === undefined) {
             return;
         }
-        letters[currentLetter].focus();
     };
 
     const currentRow = () => {
@@ -125,11 +138,21 @@ async function main() {
         const lettersNodeList = guessRow.childNodes;
         const lettersArray = Array.from(lettersNodeList);
         letters = lettersArray.filter((letter) => letter.nodeName !== "#text");
-        window.addEventListener("keydown", handleKeyDown);
-        window.addEventListener("keyup", handleKeyUp);
 
         guessDiv = guessRow;
     };
+
+    window.addEventListener("keydown", (event) => {
+        if (event.key === "Backspace") {
+            eraseLastChar();
+        }
+        if (event.key === "Enter") {
+            guess();
+        }
+        if (isLetter(event.key)) {
+            handleLetter(event.key);
+        }
+    });
 
     currentRow();
     wordOfToday();

@@ -58,30 +58,9 @@ main {
 }
 
 .win {
-    background: linear-gradient(
-        270deg,
-        #2732c6,
-        #15ffc3,
-        #e8f902,
-        #ff2f80,
-        #52c627
-    );
     background-size: 1000% 1000%;
-    color: white;
 
     animation: win 3s linear infinite;
-}
-
-@keyframes win {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 .loss,
@@ -180,4 +159,44 @@ main {
 
 .hidden {
     display: none;
+}
+
+@keyframes win {
+    100%,
+    0% {
+        color: rgb(255, 0, 0);
+    }
+    8% {
+        color: rgb(255, 127, 0);
+    }
+    16% {
+        color: rgb(255, 255, 0);
+    }
+    25% {
+        color: rgb(127, 255, 0);
+    }
+    33% {
+        color: rgb(0, 255, 0);
+    }
+    41% {
+        color: rgb(0, 255, 127);
+    }
+    50% {
+        color: rgb(0, 255, 255);
+    }
+    58% {
+        color: rgb(0, 127, 255);
+    }
+    66% {
+        color: rgb(0, 0, 255);
+    }
+    75% {
+        color: rgb(127, 0, 255);
+    }
+    83% {
+        color: rgb(255, 0, 255);
+    }
+    91% {
+        color: rgb(255, 0, 127);
+    }
 }
