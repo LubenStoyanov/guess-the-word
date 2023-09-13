@@ -24,3 +24,4 @@ Word Master is a popular word puzzle game that challenges players to guess a hid
    - You win Word Master if you guess the hidden word within six attempts.
    - If you don't guess the word in six attempts, the game ends, and you can start a new game.
 
+[Play](https://guess-the-word-phi.vercel.app/)
