@@ -47,11 +47,11 @@ async function main() {
     };
 
     const getCharAmount = () => {
-        guessWord.split("").forEach((c) => {
+        word.split("").forEach((c) => {
             if (charAmount[c]) {
                 charAmount[c]++;
             } else {
-                charAmount[c] = 0;
+                charAmount[c] = 1;
             }
         });
     };
@@ -72,28 +72,32 @@ async function main() {
         } catch (error) {
             console.error(error);
         }
+        getCharAmount();
 
         if (guessWord === word) {
-            letters.forEach((l) => {
-                guessDiv.classList.add("win");
-            });
+            guessDiv.classList.add("win");
         } else {
             const guessWordArray = guessWord.split("");
             guessWordArray.forEach((l, i) => {
                 if (l === word[i]) {
                     letters[i].classList.add("bg-limegreen");
-                }
-                if (!word.includes(l)) {
+                    charAmount[l]--;
+
+                } else if (!word.includes(l)) {
                     letters[i].classList.add("bg-lightgray");
                 }
             });
 
-            getCharAmount();
+            console.log(charAmount);
             guessWordArray.forEach((l, i) => {
                 if (charAmount[l] !== 0 && word.includes(l)) {
                     letters[i].classList.add("bg-yellow");
-                }
+                    charAmount[l]--;
+                } else if (!letters[i].classList.contains("bg-limegreen")) {
+                    letters[i].classList.add("bg-lightgray");
+                }           
             });
+            console.log(charAmount);
 
             currentRound++;
             if (currentRound > MAX_GUESSES) {
@@ -103,6 +107,7 @@ async function main() {
             if (guessWord.length >= ANSWER_LENGTH) {
                 currentLetter = 0;
                 guessWord = "";
+                charAmount = {};
             }
             currentRow();
         }
@@ -119,7 +124,6 @@ async function main() {
     };
 
     const handleLetter = (letter) => {
-        console.log(letter);
         if (guessWord.length >= ANSWER_LENGTH) {
             return;
         }

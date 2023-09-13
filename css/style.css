@@ -157,6 +157,10 @@ main {
     }
 }
 
+h1 {
+    color: #4b0d49;
+}
+
 .hidden {
     display: none;
 }
