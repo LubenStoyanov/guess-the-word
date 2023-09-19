@@ -2,7 +2,7 @@
 
 ## Overview
 
-Word Master is a popular word puzzle game that challenges players to guess a hidden five-letter word within six attempts. It's a fun and engaging game that tests your word knowledge, deductive reasoning, and vocabulary skills. This README.md file provides an overview of how to play Word Master and how to set it up in your local environment.
+Word Master is a popular word puzzle game that challenges players to guess a hidden five-letter word within six attempts. It's a fun and engaging game that tests your word knowledge, deductive reasoning, and vocabulary skills. 
 
 ## How to Play
 
