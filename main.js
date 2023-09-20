@@ -12,7 +12,8 @@ const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
 const GET_WORD_URL = "https://words.dev-apis.com/word-of-the-day?random=1";
 const VALIDATE_WORD_URL = "https://words.dev-apis.com/validate-word";
-let lang = "en";
+let lang = navigator.language;
+console.log(lang);
 let validGermanWord = false;
 const regexAlphabet = /^[a-zA-Z]{5}$/;
 
@@ -26,7 +27,7 @@ async function main() {
     let charAmount = {};
 
     const wordOfToday = async () => {
-        if (lang === "en") {
+        if (lang.startsWith("en")) {
             try {
                 loading.classList.remove("hidden");
                 const promise = await fetch(GET_WORD_URL);
@@ -38,28 +39,34 @@ async function main() {
             }
         } else {
             while (!validGermanWord) {
-                let candidate = germanWords[Math.floor(Math.random() * germanWords.length - 1)];
+                let candidate =
+                    germanWords[
+                        Math.floor(Math.random() * germanWords.length - 1)
+                    ];
                 if (regexAlphabet.test(candidate)) {
-                    validGermanWord = true;
                     word = candidate;
+                    validGermanWord = true;
                 }
-            } 
+            }
             validGermanWord = false;
         }
-
         console.log(word);
     };
 
     const isValidWord = async () => {
-        try {
-            const response = await fetch(VALIDATE_WORD_URL, {
-                method: "POST",
-                body: JSON.stringify({ word: guessWord }),
-            });
-            const data = await response.json();
-            return data.validWord;
-        } catch (error) {
-            console.error(error);
+        if (lang.startsWith("en")) {
+            try {
+                const response = await fetch(VALIDATE_WORD_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ word: guessWord }),
+                });
+                const data = await response.json();
+                return data.validWord;
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            return germanWords.includes(guessWord);
         }
     };
 
@@ -95,7 +102,7 @@ async function main() {
         }
         getCharAmount();
 
-        if (guessWord === word) {
+        if (guessWord.toLowerCase() === word.toLowerCase()) {
             guessDiv.classList.add("win");
         } else {
             const guessWordArray = guessWord.split("");
@@ -164,11 +171,6 @@ async function main() {
         guessDiv = guessRow;
     };
 
-    optionBtnsElement.addEventListener("click", (event) => {
-        lang = event.target.name;
-        wordOfToday();
-    });
-
     window.addEventListener("keydown", (event) => {
         if (event.key === "Backspace") {
             eraseLastChar();
@@ -184,5 +186,10 @@ async function main() {
     currentRow();
     wordOfToday();
 }
+
+optionBtnsElement.addEventListener("click", (event) => {
+    lang = event.target.name;
+    main();
+});
 
 main();
