@@ -1,21 +1,19 @@
 "use strict";
-// import data from './assets/German-words-1600000-words.json' assert { type: 'json' };
 import data from "./assets/dwds.json" assert { type: "json" };
 const germanWords = data.filter((word) => word.length === 5);
 
 const loss = document.querySelector(".loss");
 const invalidWord = document.querySelector(".invalid-word");
 const loading = document.querySelector(".lds-roller");
-const optionBtnsElement = document.querySelector(".btns-language-wrapper");
+const optionBtnsWrapper = document.querySelector(".btns-language-wrapper");
+const optionBtns = document.querySelectorAll(".btn-language");
 
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
 const GET_WORD_URL = "https://words.dev-apis.com/word-of-the-day?random=1";
 const VALIDATE_WORD_URL = "https://words.dev-apis.com/validate-word";
-let lang = navigator.language;
-console.log(lang);
-let validGermanWord = false;
 const regexAlphabet = /^[a-zA-Z]{5}$/;
+let lang = navigator.language;
 
 async function main() {
     let currentRound = 0;
@@ -25,6 +23,7 @@ async function main() {
     let letters = [];
     let word = "";
     let charAmount = {};
+    let validGermanWord = false;
 
     const wordOfToday = async () => {
         if (lang.startsWith("en")) {
@@ -32,7 +31,7 @@ async function main() {
                 loading.classList.remove("hidden");
                 const promise = await fetch(GET_WORD_URL);
                 const data = await promise.json();
-                word = data.word;
+                word = data.word.toLowerCase();
                 loading.classList.add("hidden");
             } catch (error) {
                 console.error(error);
@@ -44,13 +43,12 @@ async function main() {
                         Math.floor(Math.random() * germanWords.length - 1)
                     ];
                 if (regexAlphabet.test(candidate)) {
-                    word = candidate;
+                    word = candidate.toLowerCase();
                     validGermanWord = true;
                 }
             }
             validGermanWord = false;
         }
-        console.log(word);
     };
 
     const isValidWord = async () => {
@@ -66,7 +64,9 @@ async function main() {
                 console.error(error);
             }
         } else {
-            return germanWords.includes(guessWord);
+            return germanWords.some(
+                (word) => word.toLowerCase() === guessWord.toLowerCase()
+            );
         }
     };
 
@@ -100,10 +100,12 @@ async function main() {
         } catch (error) {
             console.error(error);
         }
+
         getCharAmount();
 
-        if (guessWord.toLowerCase() === word.toLowerCase()) {
+        if (guessWord === word) {
             guessDiv.classList.add("win");
+            return;
         } else {
             const guessWordArray = guessWord.split("");
             guessWordArray.forEach((l, i) => {
@@ -152,7 +154,6 @@ async function main() {
         if (guessWord.length >= ANSWER_LENGTH) {
             return;
         }
-
         guessWord += letter;
         letters[currentLetter].innerText = letter;
         currentLetter++;
@@ -183,13 +184,22 @@ async function main() {
         }
     });
 
-    currentRow();
-    wordOfToday();
-}
+    optionBtnsWrapper.addEventListener("click", (event) => {
+        if (event.target.tagName !== "BUTTON") {
+            return;
+        }
+        optionBtns.forEach((btn) => {
+            if (btn.name === event.target.name) {
+                btn.classList.add("language-selected");
+            } else {
+                btn.classList.remove("language-selected");
+            }
+        });
+        lang = event.target.name;
+        wordOfToday();
+    });
 
-optionBtnsElement.addEventListener("click", (event) => {
-    lang = event.target.name;
-    main();
-});
+    currentRow();
+}
 
 main();
