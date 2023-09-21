@@ -10,6 +10,16 @@ body {
     color: #d8cfcb;
 }
 
+.support-info {
+    display: none;
+    font-size: 4rem;
+    color: rgb(255, 0, 0);
+}
+
+.show {
+    display: block;
+}
+
 button {
     all: unset;
 }
