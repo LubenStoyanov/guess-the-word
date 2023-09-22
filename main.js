@@ -7,6 +7,7 @@ const invalidWord = document.querySelector(".invalid-word");
 const loading = document.querySelector(".loading-spinner");
 const optionBtnsWrapper = document.querySelector(".btns-language-wrapper");
 const optionBtns = document.querySelectorAll(".btn-language");
+const keyboard = document.querySelector(".keyboard");
 
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
@@ -190,7 +191,6 @@ async function main() {
     });
 
     optionBtnsWrapper.addEventListener("click", (event) => {
-        console.log(event.target.dataset.language)
         if (!event.target.dataset.language) {
             return;
         }
@@ -204,6 +204,29 @@ async function main() {
         });
         lang = event.target.dataset.language;
         wordOfToday();
+    });
+
+    keyboard.addEventListener("click", (event) => {
+        if (event.target.tagName !== "BUTTON" && event.target.tagName !== "SPAN") {
+            return;
+        }
+
+        if (!word) {
+            return;
+        }
+
+        const key = event.target.dataset.key;
+        if (key === "backspace") {
+            eraseLastChar();
+        }
+
+        if (key === "enter") {
+            guess();
+        }
+
+        if (isLetter(key)) {
+            handleLetter(key);
+        }
     });
 
     currentRow();
@@ -220,7 +243,7 @@ main();
             a.substr(0, 4)
         )
     ) {
-        const supportInfo = document.querySelector(".support-info");
-        supportInfo.classList.add("show");
+        //const supportInfo = document.querySelector(".support-info");
+        //supportInfo.classList.add("show");
     }
 })(navigator.userAgent || window.opera);
