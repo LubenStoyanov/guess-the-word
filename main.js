@@ -205,29 +205,32 @@ async function main() {
         lang = event.target.dataset.language;
         wordOfToday();
     });
+    
+    ["click", "touchstart"].forEach(eventName => {
+        keyboard.addEventListener(eventName, (event) => {
+            if (event.target.tagName !== "BUTTON" && event.target.tagName !== "SPAN") {
+                return;
+            }
 
-    keyboard.addEventListener("click", (event) => {
-        if (event.target.tagName !== "BUTTON" && event.target.tagName !== "SPAN") {
-            return;
-        }
+            if (!word) {
+                return;
+            }
 
-        if (!word) {
-            return;
-        }
+            const key = event.target.dataset.key;
+            if (key === "backspace") {
+                console.log("backspace")
+                eraseLastChar();
+            }
 
-        const key = event.target.dataset.key;
-        if (key === "backspace") {
-            eraseLastChar();
-        }
+            if (key === "enter") {
+                guess();
+            }
 
-        if (key === "enter") {
-            guess();
-        }
-
-        if (isLetter(key)) {
-            handleLetter(key);
-        }
-    });
+            if (isLetter(key)) {
+                handleLetter(key);
+            }
+        });
+    })
 
     setCurrentRow();
 }
