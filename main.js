@@ -193,10 +193,6 @@ async function main() {
     });
 
     optionBtnsHammer.on("tap", (event) => {
-        if (!event.target.dataset.language) {
-            return;
-        }
-
         optionBtns.forEach((btn) => {
             if (btn.name === event.target.dataset.language) {
                 btn.classList.add("language-selected");
