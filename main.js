@@ -4,7 +4,7 @@ const germanWords = data.filter((word) => word.length === 5);
 
 const loss = document.querySelector(".loss");
 const invalidWord = document.querySelector(".invalid-word");
-const loading = document.querySelector(".lds-roller");
+const loading = document.querySelector(".loading-spinner");
 const optionBtnsWrapper = document.querySelector(".btns-language-wrapper");
 const optionBtns = document.querySelectorAll(".btn-language");
 
@@ -49,6 +49,7 @@ async function main() {
             }
             validGermanWord = false;
         }
+        console.log(word);
     };
 
     const isValidWord = async () => {
@@ -173,6 +174,10 @@ async function main() {
     };
 
     window.addEventListener("keydown", (event) => {
+        if (!word) {
+            return;
+        }
+
         if (event.key === "Backspace") {
             eraseLastChar();
         }
@@ -185,17 +190,19 @@ async function main() {
     });
 
     optionBtnsWrapper.addEventListener("click", (event) => {
-        if (event.target.tagName !== "BUTTON") {
+        console.log(event.target.dataset.language)
+        if (!event.target.dataset.language) {
             return;
         }
+
         optionBtns.forEach((btn) => {
-            if (btn.name === event.target.name) {
+            if (btn.name === event.target.dataset.language) {
                 btn.classList.add("language-selected");
             } else {
                 btn.classList.remove("language-selected");
             }
         });
-        lang = event.target.name;
+        lang = event.target.dataset.language;
         wordOfToday();
     });
 
@@ -216,4 +223,4 @@ main();
         const supportInfo = document.querySelector(".support-info");
         supportInfo.classList.add("show");
     }
-})(navigator.userAgent || navigator.vendor || window.opera);
+})(navigator.userAgent || window.opera);

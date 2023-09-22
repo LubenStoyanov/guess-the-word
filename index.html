@@ -8,16 +8,19 @@
     </head>
     <body>
         <div class="page-wrapper">
-            <header>
-                <p class="support-info">Supports only desktop</p>
+            <header class="header">
+                <!--<p class="support-info">Supports only desktop</p>-->
                 <h1 class="h1-heading">Word Masters</h1>
+                <div class="loading-spinner hidden"><div class="loading">
+                        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div></div>
                 <div class="btns-language-wrapper">
-                    <button name="de" class="btn-language" type="button">
+                    <div data-language="de" class="btn-language">
                         german
-                    </button>
-                    <button name="en" class="btn-language" type="button">
+                    </div>
+                    <div data-language="en" class="btn-language">
                         english
-                    </button>
+                    </div>
                 </div>
             </header>
             <main>
@@ -66,16 +69,6 @@
             </main>
             <div class="loss" hidden>You lost.</div>
             <div class="invalid-word" hidden>This is not a valid word.</div>
-            <div class="lds-roller hidden">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
         </div>
         <script src="main.js" type="module"></script>
     </body>
