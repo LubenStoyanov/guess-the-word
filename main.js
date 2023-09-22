@@ -4,8 +4,10 @@ const germanWords = data.filter((word) => word.length === 5);
 
 const loading = document.querySelector(".loading-spinner");
 const optionBtnsWrapper = document.querySelector(".btns-language-wrapper");
+const optionBtnsHammer = new Hammer(optionBtnsWrapper);
 const optionBtns = document.querySelectorAll(".btn-language");
 const keyboard = document.querySelector(".keyboard");
+const keyboardHammer = new Hammer(keyboard);
 
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
@@ -190,7 +192,7 @@ async function main() {
         }
     });
 
-    optionBtnsWrapper.addEventListener("click", (event) => {
+    optionBtnsHammer.on("tap", (event) => {
         if (!event.target.dataset.language) {
             return;
         }
@@ -207,7 +209,7 @@ async function main() {
         console.log(event.target.dataset.language);
     });
 
-    keyboard.addEventListener("click", (event) => {
+    keyboardHammer.on("tap", (event) => {
         if (
             event.target.tagName !== "BUTTON" &&
             event.target.tagName !== "SPAN"
