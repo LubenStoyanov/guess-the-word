@@ -1,15 +1,16 @@
 :root {
-    --wrong-color: #4D4948;
-    --correct-color: #228C22;
-    --partial-correct: #CC8200;
+    --wrong-color: #4d4948;
+    --correct-color: #228c22;
+    --partial-correct: #cc8200;
     --text-color: #fefefe;
     --letter-color: #fdfdfd;
     --bg-primary: #212121;
-    --info: #F55A10;
+    --info: #f55a10;
 }
 
 button {
     all: unset;
+    cursor: pointer;
 }
 
 * {
@@ -33,7 +34,6 @@ body {
 .show {
     display: block;
 }
-
 
 .page-wrapper {
     display: flex;
@@ -219,7 +219,7 @@ body {
 
 @keyframes invalid {
     0% {
-        transform: translateX(-5px)
+        transform: translateX(-5px);
     }
     50% {
         transform: translateX(5px);
@@ -230,88 +230,102 @@ body {
 }
 
 @keyframes loading {
-  0% { 
-      opacity: 1; 
-  }
-  100% { 
-      opacity: 0 ;
-  }
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 .loading div {
-  left: 47px;
-  top: 24px;
-  position: absolute;
-  animation: loading linear 1s infinite;
-  background: #fe718d;
-  width: 6px;
-  height: 12px;
-  border-radius: 3px / 6px;
-  transform-origin: 3px 26px;
-}.loading div:nth-child(1) {
-  transform: rotate(0deg);
-  animation-delay: -0.9166666666666666s;
-  background: #fe718d;
-}.loading div:nth-child(2) {
-  transform: rotate(30deg);
-  animation-delay: -0.8333333333333334s;
-  background: #f47e60;
-}.loading div:nth-child(3) {
-  transform: rotate(60deg);
-  animation-delay: -0.75s;
-  background: #f8b26a;
-}.loading div:nth-child(4) {
-  transform: rotate(90deg);
-  animation-delay: -0.6666666666666666s;
-  background: #abbd81;
-}.loading div:nth-child(5) {
-  transform: rotate(120deg);
-  animation-delay: -0.5833333333333334s;
-  background: #849b87;
-}.loading div:nth-child(6) {
-  transform: rotate(150deg);
-  animation-delay: -0.5s;
-  background: #6492ac;
-}.loading div:nth-child(7) {
-  transform: rotate(180deg);
-  animation-delay: -0.4166666666666667s;
-  background: #637cb5;
-}.loading div:nth-child(8) {
-  transform: rotate(210deg);
-  animation-delay: -0.3333333333333333s;
-  background: #6a63b6;
-}.loading div:nth-child(9) {
-  transform: rotate(240deg);
-  animation-delay: -0.25s;
-  background: #fe718d;
-}.loading div:nth-child(10) {
-  transform: rotate(270deg);
-  animation-delay: -0.16666666666666666s;
-  background: #f47e60;
-}.loading div:nth-child(11) {
-  transform: rotate(300deg);
-  animation-delay: -0.08333333333333333s;
-  background: #f8b26a;
-}.loading div:nth-child(12) {
-  transform: rotate(330deg);
-  animation-delay: 0s;
-  background: #abbd81;
+    left: 47px;
+    top: 24px;
+    position: absolute;
+    animation: loading linear 1s infinite;
+    background: #fe718d;
+    width: 6px;
+    height: 12px;
+    border-radius: 3px / 6px;
+    transform-origin: 3px 26px;
+}
+.loading div:nth-child(1) {
+    transform: rotate(0deg);
+    animation-delay: -0.9166666666666666s;
+    background: #fe718d;
+}
+.loading div:nth-child(2) {
+    transform: rotate(30deg);
+    animation-delay: -0.8333333333333334s;
+    background: #f47e60;
+}
+.loading div:nth-child(3) {
+    transform: rotate(60deg);
+    animation-delay: -0.75s;
+    background: #f8b26a;
+}
+.loading div:nth-child(4) {
+    transform: rotate(90deg);
+    animation-delay: -0.6666666666666666s;
+    background: #abbd81;
+}
+.loading div:nth-child(5) {
+    transform: rotate(120deg);
+    animation-delay: -0.5833333333333334s;
+    background: #849b87;
+}
+.loading div:nth-child(6) {
+    transform: rotate(150deg);
+    animation-delay: -0.5s;
+    background: #6492ac;
+}
+.loading div:nth-child(7) {
+    transform: rotate(180deg);
+    animation-delay: -0.4166666666666667s;
+    background: #637cb5;
+}
+.loading div:nth-child(8) {
+    transform: rotate(210deg);
+    animation-delay: -0.3333333333333333s;
+    background: #6a63b6;
+}
+.loading div:nth-child(9) {
+    transform: rotate(240deg);
+    animation-delay: -0.25s;
+    background: #fe718d;
+}
+.loading div:nth-child(10) {
+    transform: rotate(270deg);
+    animation-delay: -0.16666666666666666s;
+    background: #f47e60;
+}
+.loading div:nth-child(11) {
+    transform: rotate(300deg);
+    animation-delay: -0.08333333333333333s;
+    background: #f8b26a;
+}
+.loading div:nth-child(12) {
+    transform: rotate(330deg);
+    animation-delay: 0s;
+    background: #abbd81;
 }
 .loading-spinner {
-  width: 50px;
-  height: 50px;
-  display: inline-block;
-  overflow: hidden;
-  background: transparent;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    overflow: hidden;
+    background: transparent;
 }
 .loading {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform: translateZ(0) scale(0.5);
-  backface-visibility: hidden;
-  transform-origin: 0 0; 
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform: translateZ(0) scale(0.5);
+    backface-visibility: hidden;
+    transform-origin: 0 0;
 }
-.loading div { box-sizing: content-box; }
+.loading div {
+    box-sizing: content-box;
+}
 
 @keyframes win {
     100%,
