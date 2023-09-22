@@ -97,7 +97,7 @@ async function main() {
                 currentRow.classList.add("invalid-word");
                 setTimeout(() => {
                     currentRow.classList.remove("invalid-word");
-                }, 300)
+                }, 300);
                 return;
             }
         } catch (error) {
@@ -189,7 +189,8 @@ async function main() {
             handleLetter(event.key);
         }
     });
-    ["click", "touchstart"].forEach(eventName => {
+
+    ["click", "touchend"].forEach((eventName) => {
         optionBtnsWrapper.addEventListener(eventName, (event) => {
             if (!event.target.dataset.language) {
                 return;
@@ -204,12 +205,16 @@ async function main() {
             });
             lang = event.target.dataset.language;
             wordOfToday();
+            console.log(event.target.dataset.language);
         });
     });
-    
-    ["click", "touchstart"].forEach(eventName => {
+
+    ["click", "touchend"].forEach((eventName) => {
         keyboard.addEventListener(eventName, (event) => {
-            if (event.target.tagName !== "BUTTON" && event.target.tagName !== "SPAN") {
+            if (
+                event.target.tagName !== "BUTTON" &&
+                event.target.tagName !== "SPAN"
+            ) {
                 return;
             }
 
@@ -219,7 +224,7 @@ async function main() {
 
             const key = event.target.dataset.key;
             if (key === "backspace") {
-                console.log("backspace")
+                console.log("backspace");
                 eraseLastChar();
             }
 
@@ -231,7 +236,7 @@ async function main() {
                 handleLetter(key);
             }
         });
-    })
+    });
 
     setCurrentRow();
 }
