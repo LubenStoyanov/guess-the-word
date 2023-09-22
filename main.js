@@ -189,21 +189,22 @@ async function main() {
             handleLetter(event.key);
         }
     });
-
-    optionBtnsWrapper.addEventListener("click", (event) => {
-        if (!event.target.dataset.language) {
-            return;
-        }
-
-        optionBtns.forEach((btn) => {
-            if (btn.name === event.target.dataset.language) {
-                btn.classList.add("language-selected");
-            } else {
-                btn.classList.remove("language-selected");
+    ["click", "touchstart"].forEach(eventName => {
+        optionBtnsWrapper.addEventListener(eventName, (event) => {
+            if (!event.target.dataset.language) {
+                return;
             }
+
+            optionBtns.forEach((btn) => {
+                if (btn.name === event.target.dataset.language) {
+                    btn.classList.add("language-selected");
+                } else {
+                    btn.classList.remove("language-selected");
+                }
+            });
+            lang = event.target.dataset.language;
+            wordOfToday();
         });
-        lang = event.target.dataset.language;
-        wordOfToday();
     });
     
     ["click", "touchstart"].forEach(eventName => {
