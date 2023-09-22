@@ -2,8 +2,6 @@
 import data from "./assets/dwds.json" assert { type: "json" };
 const germanWords = data.filter((word) => word.length === 5);
 
-const loss = document.querySelector(".loss");
-const invalidWord = document.querySelector(".invalid-word");
 const loading = document.querySelector(".loading-spinner");
 const optionBtnsWrapper = document.querySelector(".btns-language-wrapper");
 const optionBtns = document.querySelectorAll(".btn-language");
@@ -20,7 +18,7 @@ async function main() {
     let currentRound = 0;
     let currentLetter = 0;
     let guessWord = "";
-    let guessDiv;
+    let currentRow;
     let letters = [];
     let word = "";
     let charAmount = {};
@@ -94,9 +92,12 @@ async function main() {
         try {
             loading.classList.remove("hidden");
             const isValid = await isValidWord();
-            invalidWord.hidden = isValid;
             loading.classList.add("hidden");
             if (!isValid) {
+                currentRow.classList.add("invalid-word");
+                setTimeout(() => {
+                    currentRow.classList.remove("invalid-word");
+                }, 300)
                 return;
             }
         } catch (error) {
@@ -106,7 +107,7 @@ async function main() {
         getCharAmount();
 
         if (guessWord === word) {
-            guessDiv.classList.add("win");
+            currentRow.classList.add("win");
             return;
         } else {
             const guessWordArray = guessWord.split("");
@@ -138,12 +139,11 @@ async function main() {
                 guessWord = "";
                 charAmount = {};
             }
-            currentRow();
+            setCurrentRow();
         }
     };
 
     const eraseLastChar = () => {
-        invalidWord.hidden = true;
         if (guessWord.length === 0) {
             return;
         }
@@ -165,13 +165,13 @@ async function main() {
         }
     };
 
-    const currentRow = () => {
+    const setCurrentRow = () => {
         const guessRow = document.querySelector(`.round-${currentRound}`);
         const lettersNodeList = guessRow.childNodes;
         const lettersArray = Array.from(lettersNodeList);
         letters = lettersArray.filter((letter) => letter.nodeName !== "#text");
 
-        guessDiv = guessRow;
+        currentRow = guessRow;
     };
 
     window.addEventListener("keydown", (event) => {
@@ -229,7 +229,7 @@ async function main() {
         }
     });
 
-    currentRow();
+    setCurrentRow();
 }
 
 main();

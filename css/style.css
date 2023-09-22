@@ -5,6 +5,7 @@
     --text-color: #fefefe;
     --letter-color: #fdfdfd;
     --bg-primary: #212121;
+    --info: #F55A10;
 }
 
 button {
@@ -33,6 +34,7 @@ body {
     display: block;
 }
 
+
 .page-wrapper {
     display: flex;
     flex-direction: column;
@@ -51,6 +53,11 @@ body {
 .h1-heading {
     font-size: 1.25rem;
     text-align: left;
+}
+
+.heading__text small {
+    font-size: 12px;
+    color: var(--info);
 }
 
 .btns-language-wrapper {
@@ -121,13 +128,9 @@ body {
     animation: win 3s linear infinite;
 }
 
-.loss,
-.invalid-word {
-    text-align: center;
-    color: var(--text-color);
-    font-size: 3rem;
-    font-weight: bold;
-    margin-top: 3rem;
+.invalid-word div {
+    border: 2px solid var(--info);
+    animation: invalid 0.3s ease-in-out;
 }
 
 .hidden {
@@ -173,11 +176,16 @@ body {
 }
 
 @media (min-width: 768px) {
-    .letter {
-    font-size: 3rem;
-    height: 4rem;
-    width: 4rem;
+    .heading__text {
+        text-align: center;
     }
+
+    .letter {
+        font-size: 3rem;
+        height: 4rem;
+        width: 4rem;
+    }
+
     .header {
         margin-bottom: 1rem;
         display: flex;
@@ -209,9 +217,25 @@ body {
     }
 }
 
+@keyframes invalid {
+    0% {
+        transform: translateX(-5px)
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
 @keyframes loading {
-  0% { opacity: 1 }
-  100% { opacity: 0 }
+  0% { 
+      opacity: 1; 
+  }
+  100% { 
+      opacity: 0 ;
+  }
 }
 .loading div {
   left: 47px;
