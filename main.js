@@ -1,5 +1,5 @@
 "use strict";
-import data from "./assets/dwds.json";
+import data from "./assets/dwds.js";
 const germanWords = data.filter((word) => word.length === 5);
 
 const loading = document.querySelector(".loading-spinner");
