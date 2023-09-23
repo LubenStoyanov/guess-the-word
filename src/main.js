@@ -1,5 +1,5 @@
 "use strict";
-import data from "./assets/dwds.js";
+import data from "../assets/dwds.js"; // assert { type: json } maybe stopped click event on iPhone, maybe Hammer.js helped as well
 const germanWords = data.filter((word) => word.length === 5);
 
 const loading = document.querySelector(".loading-spinner");
@@ -8,6 +8,8 @@ const optionBtnsHammer = new Hammer(optionBtnsWrapper);
 const optionBtns = document.querySelectorAll(".btn-language");
 const keyboard = document.querySelector(".keyboard");
 const keyboardHammer = new Hammer(keyboard);
+const answer = document.querySelector(".answer");
+const headerSmall = document.querySelector(".header__small");
 
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
@@ -50,7 +52,6 @@ async function main() {
             }
             validGermanWord = false;
         }
-        console.log(word);
     };
 
     const isValidWord = async () => {
@@ -133,7 +134,8 @@ async function main() {
 
             currentRound++;
             if (currentRound > MAX_GUESSES) {
-                loss.hidden = false;
+                answer.innerText = word;
+                answer.classList.remove("hidden");
                 return;
             }
             if (guessWord.length >= ANSWER_LENGTH) {
@@ -202,7 +204,7 @@ async function main() {
         });
         lang = event.target.dataset.language;
         wordOfToday();
-        console.log(event.target.dataset.language);
+        headerSmall.classList.add("invisible");
     });
 
     keyboardHammer.on("tap", (event) => {
@@ -219,7 +221,6 @@ async function main() {
 
         const key = event.target.dataset.key;
         if (key === "backspace") {
-            console.log("backspace");
             eraseLastChar();
         }
 

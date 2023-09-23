@@ -10,9 +10,9 @@
     <body>
         <div class="page-wrapper">
             <header class="header">
-                <div class="heading__text">
-                    <h1 class="h1-heading">Word Masters</h1>
-                    <small>Choose language first</small>
+                <div class="header__heading">
+                    <h1 class="header__title">Word Masters</h1>
+                    <small class="header__small">Choose language first</small>
                 </div>
                 <div class="loading-spinner hidden"><div class="loading">
                         <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
@@ -70,6 +70,7 @@
                         <div class="letter letter-3"></div>
                         <div class="letter letter-4"></div>
                     </div>
+                    <p class="answer hidden"></p>
                 </section>
                 <section class="keyboard">
                     <div class="keyboard__row">
@@ -109,7 +110,7 @@
                 </section>
             </main>
         </div>
-        <script src="./hammer.min.js"></script>
-        <script src="./main.js" type="module"></script>
+        <script src="./src/hammer.min.js"></script>
+        <script src="./src/main.js" type="module"></script>
     </body>
 </html>
