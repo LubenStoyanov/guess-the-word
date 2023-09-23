@@ -1,5 +1,5 @@
 "use strict";
-import data from "../assets/dwds.js"; // assert { type: json } maybe stopped click event on iPhone, maybe Hammer.js helped as well
+import data from "../assets/german_words.js"; // assert { type: json } maybe stopped click event on iPhone, maybe Hammer.js helped as well
 const germanWords = data.filter((word) => word.length === 5);
 
 const loading = document.querySelector(".loading-spinner");
@@ -8,8 +8,10 @@ const optionBtnsHammer = new Hammer(optionBtnsWrapper);
 const optionBtns = document.querySelectorAll(".btn-language");
 const keyboard = document.querySelector(".keyboard");
 const keyboardHammer = new Hammer(keyboard);
-const answer = document.querySelector(".answer");
 const headerSmall = document.querySelector(".header__small");
+const gameOver = document.querySelector(".game-over");
+const newGame = document.querySelector(".game-over__new-game");
+const gameOverHammer = new Hammer(gameOver);
 
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
@@ -134,8 +136,15 @@ async function main() {
 
             currentRound++;
             if (currentRound > MAX_GUESSES) {
-                answer.innerText = word;
-                answer.classList.remove("hidden");
+                gameOver.firstElementChild.innerText = word;
+                gameOverHammer.on("tap", (event) => {
+                    if (event.target.tagName !== "BUTTON") {
+                        return;
+                    }
+
+                    location.reload();
+                })
+                gameOver.classList.remove("hidden");
                 return;
             }
             if (guessWord.length >= ANSWER_LENGTH) {
