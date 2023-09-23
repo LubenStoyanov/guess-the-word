@@ -44,6 +44,7 @@ body {
     margin-bottom: 0.5rem;
     border-bottom: 1px solid #404040;
     min-height: 60px;
+    padding: 0 1rem;
 }
 
 .header__title {
