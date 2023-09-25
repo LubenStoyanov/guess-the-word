@@ -1,5 +1,5 @@
 "use strict";
-import data from "../assets/german_words.js"; 
+import data from "../assets/validWords.js"; 
 const germanWords = data.filter((word) => word.length === 5);
 
 const loading = document.querySelector(".loading-spinner");
