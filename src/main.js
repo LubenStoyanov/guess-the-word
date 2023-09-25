@@ -1,5 +1,5 @@
 "use strict";
-import data from "../assets/german_words.js"; // assert { type: json } maybe stopped click event on iPhone, maybe Hammer.js helped as well
+import data from "../assets/german_words.js"; 
 const germanWords = data.filter((word) => word.length === 5);
 
 const loading = document.querySelector(".loading-spinner");
@@ -122,7 +122,6 @@ async function main() {
                     letters[i].classList.add("bg-limegreen");
                     charAmount[l]--;
                 }  
-
                 if (!word.includes(l)) {
                     letters[i].classList.add("bg-lightgray");
                 }
@@ -146,7 +145,6 @@ async function main() {
                 gameOverModal();
                 return;
             }
-
             if (guessWord.length >= ANSWER_LENGTH) {
                 currentLetter = 0;
                 guessWord = "";
@@ -192,7 +190,6 @@ async function main() {
             if (event.target.tagName !== "BUTTON") {
                 return;
             }
-
             location.reload();
         })
         gameOver.classList.remove("hidden");
@@ -202,7 +199,6 @@ async function main() {
         if (!word) {
             return;
         }
-
         if (event.key === "Backspace") {
             eraseLastChar();
         }
@@ -234,26 +230,20 @@ async function main() {
         ) {
             return;
         }
-
         if (!word) {
             return;
         }
-
         const key = event.target.dataset.key;
         if (key === "backspace") {
             eraseLastChar();
         }
-
         if (key === "enter") {
             guess();
         }
-
         if (isLetter(key)) {
             handleLetter(key);
         }
     });
-
     setCurrentRow();
 }
-
 main();
