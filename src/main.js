@@ -10,7 +10,6 @@ const keyboard = document.querySelector(".keyboard");
 const keyboardHammer = new Hammer(keyboard);
 const headerSmall = document.querySelector(".header__small");
 const gameOver = document.querySelector(".game-over");
-const newGame = document.querySelector(".game-over__new-game");
 const gameOverHammer = new Hammer(gameOver);
 
 const ANSWER_LENGTH = 5;
@@ -18,7 +17,7 @@ const MAX_GUESSES = 5;
 const GET_WORD_URL = "https://words.dev-apis.com/word-of-the-day?random=1";
 const VALIDATE_WORD_URL = "https://words.dev-apis.com/validate-word";
 const regexAlphabet = /^[a-zA-Z]{5}$/;
-let lang = navigator.language;
+let lang = navigator.language; 
 
 async function main() {
     let currentRound = 0;
@@ -54,6 +53,7 @@ async function main() {
             }
             validGermanWord = false;
         }
+        console.log(word)
     };
 
     const isValidWord = async () => {
@@ -113,6 +113,7 @@ async function main() {
 
         if (guessWord === word) {
             currentRow.classList.add("win");
+            setTimeout(() => gameOverModal(), 1500);
             return;
         } else {
             const guessWordArray = guessWord.split("");
@@ -120,16 +121,21 @@ async function main() {
                 if (l === word[i]) {
                     letters[i].classList.add("bg-limegreen");
                     charAmount[l]--;
-                } else if (!word.includes(l)) {
+                }  
+
+                if (!word.includes(l)) {
                     letters[i].classList.add("bg-lightgray");
                 }
             });
 
             guessWordArray.forEach((l, i) => {
+                if(l === word[i]){
+                    return;
+                }
                 if (charAmount[l] !== 0 && word.includes(l)) {
                     letters[i].classList.add("bg-yellow");
                     charAmount[l]--;
-                } else if (!letters[i].classList.contains("bg-limegreen")) {
+                } else {
                     letters[i].classList.add("bg-lightgray");
                 }
             });
@@ -137,16 +143,10 @@ async function main() {
             currentRound++;
             if (currentRound > MAX_GUESSES) {
                 gameOver.firstElementChild.innerText = word;
-                gameOverHammer.on("tap", (event) => {
-                    if (event.target.tagName !== "BUTTON") {
-                        return;
-                    }
-
-                    location.reload();
-                })
-                gameOver.classList.remove("hidden");
+                gameOverModal();
                 return;
             }
+
             if (guessWord.length >= ANSWER_LENGTH) {
                 currentLetter = 0;
                 guessWord = "";
@@ -186,6 +186,17 @@ async function main() {
 
         currentRow = guessRow;
     };
+
+    const gameOverModal = () => {
+        gameOverHammer.on("tap", (event) => {
+            if (event.target.tagName !== "BUTTON") {
+                return;
+            }
+
+            location.reload();
+        })
+        gameOver.classList.remove("hidden");
+    }
 
     window.addEventListener("keydown", (event) => {
         if (!word) {
