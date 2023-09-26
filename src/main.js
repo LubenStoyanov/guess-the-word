@@ -13,7 +13,7 @@ const gameOver = document.querySelector(".game-over");
 const gameOverHammer = new Hammer(gameOver);
 const gameInfoClose = document.querySelector(".game-info__close");
 const gameInfoCloseHammer = new Hammer(gameInfoClose);
-const headerGameInfoIcon = document.querySelector(".header__game-info-modal-icon");
+const headerGameInfoIcon = document.querySelector(".header__game-info-modal");
 const headerGameInfoIconHammer = new Hammer(headerGameInfoIcon);
 
 const ANSWER_LENGTH = 5;
@@ -101,8 +101,8 @@ async function main() {
         }
 
         try {
-            loading.classList.remove("hidden");
             headerGameInfoIcon.classList.add("hidden");
+            loading.classList.remove("hidden");
             const isValid = await isValidWord();
             loading.classList.add("hidden");
             headerGameInfoIcon.classList.remove("hidden");
