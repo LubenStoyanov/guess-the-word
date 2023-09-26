@@ -11,6 +11,8 @@ const keyboardHammer = new Hammer(keyboard);
 const headerSmall = document.querySelector(".header__small");
 const gameOver = document.querySelector(".game-over");
 const gameOverHammer = new Hammer(gameOver);
+const gameInfoClose = document.querySelector(".game-info__close");
+const gameInfoCloseHammer = new Hammer(gameInfoClose);
 
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
@@ -243,6 +245,11 @@ async function main() {
         if (isLetter(key)) {
             handleLetter(key);
         }
+    });
+
+    gameInfoCloseHammer.on("tap", (event) => {
+        const gameInfo = document.querySelector(".game-info");
+        gameInfo.classList.add("slide-out-down");
     });
     setCurrentRow();
 }
