@@ -35,6 +35,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
 }
 
 .header {
@@ -57,6 +58,11 @@ body {
     color: var(--info);
     animation: pulse-text 2s ease-in-out infinite;
 }
+
+.header__game-info-modal-icon {
+    font-size: 1.5rem;
+}
+
 
 .btns-language-wrapper {
     display: flex;
@@ -303,6 +309,20 @@ p.answer {
     visibility: hidden;
 }
 
+.slide-in-up {
+    animation: slide-in-up 0.3s ease-in-out;
+}
+
+@keyframes slide-in-up {
+    0% {
+        top: 1000px;
+        opacity: 0;
+    }
+    100% {
+        top: 0;
+        opacity: 1;
+    }
+}
 @keyframes slide-out-down {
     0% {
         top: 0;

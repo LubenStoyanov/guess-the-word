@@ -13,6 +13,8 @@ const gameOver = document.querySelector(".game-over");
 const gameOverHammer = new Hammer(gameOver);
 const gameInfoClose = document.querySelector(".game-info__close");
 const gameInfoCloseHammer = new Hammer(gameInfoClose);
+const headerGamerInfoIcon = document.querySelector(".header__game-info-modal-icon");
+const headerGameInfoIconHammer = new Hammer(headerGamerInfoIcon);
 
 const ANSWER_LENGTH = 5;
 const MAX_GUESSES = 5;
@@ -35,10 +37,12 @@ async function main() {
         if (lang.startsWith("en")) {
             try {
                 loading.classList.remove("hidden");
+                headerGamerInfoIcon.classList.add("hidden");
                 const promise = await fetch(GET_WORD_URL);
                 const data = await promise.json();
                 word = data.word.toLowerCase();
                 loading.classList.add("hidden");
+                headerGamerInfoIcon.classList.remove("hidden");
             } catch (error) {
                 console.error(error);
             }
@@ -247,9 +251,16 @@ async function main() {
         }
     });
 
-    gameInfoCloseHammer.on("tap", (event) => {
+    gameInfoCloseHammer.on("tap", () => {
         const gameInfo = document.querySelector(".game-info");
         gameInfo.classList.add("slide-out-down");
+        gameInfo.classList.remove("slide-in-up");
+    });
+    
+    headerGameInfoIconHammer.on("tap", () => {
+        const gameInfo = document.querySelector(".game-info");
+        gameInfo.classList.remove("slide-out-down");
+        gameInfo.classList.add("slide-in-up");
     });
     setCurrentRow();
 }
